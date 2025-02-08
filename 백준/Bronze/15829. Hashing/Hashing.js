@@ -2,44 +2,15 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
+const MOD = 1234567891;
 const charList = input[1].split("");
+
+let powValue = 1;
 let answer = 0;
 
-const charToNum = (char, idx) => {
-  const alphabets = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "w",
-    "x",
-    "y",
-    "z",
-  ];
-
-  return (alphabets.findIndex((el) => el === char) + 1) * 31 ** idx;
-};
-
-charList.forEach((char, idx) => {
-  answer += charToNum(char, idx);
+charList.forEach((char) => {
+  answer = (answer + (((char.charCodeAt() - 96) * powValue) % MOD)) % MOD;
+  powValue = (powValue * 31) % MOD;
 });
 
 console.log(answer);
